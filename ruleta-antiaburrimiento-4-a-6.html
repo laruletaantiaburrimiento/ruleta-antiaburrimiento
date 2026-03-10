@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Ruleta Antiaburrimiento 4 a 6 años - 32 opciones</title>
+<style>
+  :root{
+    --bg1:#fff7ed; --bg2:#ffe4e6; --bg3:#e0f2fe;
+    --card:rgba(255,255,255,.96); --text:#223042; --muted:#5b6574;
+    --accent:#e11d48; --btn:#2563eb; --btn2:#0f766e;
+    --shadow:0 16px 34px rgba(0,0,0,.14); --safe-bottom:max(16px, env(safe-area-inset-bottom));
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{font-family:Arial,Helvetica,sans-serif;color:var(--text);background:linear-gradient(180deg,var(--bg1),var(--bg2),var(--bg3));min-height:100vh}
+  .wrap{max-width:1180px;margin:0 auto;padding:14px 14px calc(24px + var(--safe-bottom))}
+  .hero{text-align:center;padding:6px 0 12px}
+  .pill{display:inline-block;background:#fff;padding:8px 14px;border-radius:999px;box-shadow:var(--shadow);font-weight:700;font-size:14px}
+  h1{margin:14px 0 0;font-size:clamp(28px,6.4vw,54px);line-height:1.04}
+  .grid{display:grid;grid-template-columns:1.08fr .92fr;gap:18px;margin-top:14px}
+  .card{background:var(--card);border-radius:28px;box-shadow:var(--shadow);padding:18px;backdrop-filter:blur(10px)}
+  .center{display:flex;flex-direction:column;align-items:center}
+  .wheel-wrap{position:relative;width:min(92vw,560px);height:min(92vw,560px);margin-top:2px}
+  .pointer{position:absolute;left:50%;top:-2px;transform:translateX(-50%);width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;border-bottom:36px solid var(--accent);z-index:9;filter:drop-shadow(0 6px 8px rgba(0,0,0,.18))}
+  .wheel-rotator{position:absolute;inset:0;transition:transform 5.8s cubic-bezier(.14,.72,.11,.99);transform-origin:50% 50%;will-change:transform}
+  svg#wheelSvg{width:100%;height:100%;display:block;filter:drop-shadow(0 10px 22px rgba(0,0,0,.12))}
+  .actions{display:flex;gap:10px;width:100%;justify-content:center;flex-wrap:wrap;margin-top:16px}
+  button{border:none;border-radius:18px;padding:14px 18px;min-height:52px;font-size:17px;font-weight:800;color:#fff;box-shadow:var(--shadow);cursor:pointer;touch-action:manipulation}
+  #spinBtn{background:var(--btn)} #resetBtn{background:var(--btn2)} button:disabled{opacity:.64;cursor:not-allowed}
+  .result{width:100%;margin-top:14px;background:#fff1f2;border-radius:18px;padding:16px 14px;text-align:center;font-size:clamp(20px,4.4vw,30px);font-weight:800;min-height:78px;display:flex;align-items:center;justify-content:center}
+  .toggles{display:flex;gap:10px;width:100%;justify-content:center;flex-wrap:wrap;margin-top:10px}
+  .tag{background:#fff;border-radius:999px;padding:8px 12px;box-shadow:0 8px 18px rgba(0,0,0,.08);font-size:13px;font-weight:700;color:var(--muted)}
+  h2{margin:0 0 10px;font-size:23px}
+  .rules p,.contract p,.hint{color:var(--muted);font-size:15px;line-height:1.35;margin:9px 0}
+  .ideas{padding-left:18px;columns:2;column-gap:24px;margin:0}
+  .ideas li{break-inside:avoid;margin:8px 0;color:var(--muted);font-size:15px}
+  .contract{margin-top:18px;background:#fff8e7;border-radius:20px;padding:16px}
+  .history-item{background:#f8fafc;border-radius:15px;padding:11px 12px;margin-bottom:9px;font-weight:700;font-size:15px}
+  .footer-note{text-align:center;color:var(--muted);font-size:13px;margin-top:14px}
+  #confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:30}
+  .result-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(17,24,39,.28);z-index:40;opacity:0;pointer-events:none;transition:opacity .28s ease}
+  .result-overlay.show{opacity:1;pointer-events:auto}
+  .result-box{width:min(92vw,680px);background:rgba(255,255,255,.98);border-radius:30px;box-shadow:0 24px 60px rgba(0,0,0,.22);padding:26px 22px;text-align:center;transform:scale(.9);transition:transform .28s ease}
+  .result-overlay.show .result-box{transform:scale(1)}
+  .overlay-title{font-size:clamp(20px,5vw,30px);font-weight:800;color:#475569;margin-bottom:10px}
+  .overlay-prize{font-size:clamp(28px,7vw,52px);line-height:1.05;font-weight:900;color:#e11d48;margin:0}
+  .overlay-sub{margin-top:12px;color:#64748b;font-size:clamp(14px,3.4vw,18px)}
+  .overlay-btn{margin-top:18px;background:#e11d48;width:auto;min-width:160px}
+  @media (max-width:960px){.grid{grid-template-columns:1fr}.ideas{columns:2}}
+  @media (max-width:560px){
+    .wrap{padding:12px 12px calc(22px + var(--safe-bottom))}
+    .card{padding:14px;border-radius:24px}
+    .wheel-wrap{width:min(94vw,440px);height:min(94vw,440px)}
+    .pointer{border-left:16px solid transparent;border-right:16px solid transparent;border-bottom:30px solid var(--accent)}
+    .ideas{columns:1}.actions{gap:8px}button{width:100%}.overlay-btn{width:100%}
+  }
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+
+<div class="result-overlay" id="resultOverlay">
+  <div class="result-box">
+    <div class="overlay-title">🎉 Resultado del sorteo</div>
+    <p class="overlay-prize" id="overlayPrize">🫧 Burbujas</p>
+    <div class="overlay-sub">La ruleta ya eligió la próxima actividad.</div>
+    <button class="overlay-btn" id="closeOverlayBtn">Seguir jugando</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="pill">🧒👧 Actividades para 4 a 6 años</div>
+    <h1>🎡 Ruleta Antiaburrimiento</h1>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="center">
+        <div class="wheel-wrap">
+          <div class="pointer"></div>
+          <div id="wheelRotator" class="wheel-rotator"></div>
+        </div>
+
+        <div class="actions">
+          <button id="spinBtn">🎯 Girar ruleta</button>
+          <button id="resetBtn">🔄 Reiniciar</button>
+        </div>
+
+        <div class="toggles">
+          <div class="tag">🔊 Sonido</div>
+          <div class="tag">🎉 Confeti</div>
+          <div class="tag">📱 Lista para celular</div>
+        </div>
+
+        <div id="result" class="result">Presiona “Girar ruleta” para comenzar</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Reglas rápidas</h2>
+      <div class="rules">
+        <p>✅ Actividades simples y seguras.</p>
+        <p>✅ Pensadas para niñas y niños de 4 a 6 años.</p>
+        <p>✅ Se pueden hacer en casa o con muy pocos materiales.</p>
+        <p>✅ La idea es jugar, reír y compartir.</p>
+      </div>
+
+      <h2 style="margin-top:18px;">32 opciones</h2>
+      <ul class="ideas" id="ideasList"></ul>
+
+      <div class="contract">
+        <h2 style="font-size:21px;">Mini pacto de juego</h2>
+        <p>Adulto: acompaña y ayuda.</p>
+        <p>Niñ@: elige con alegría y juega con imaginación.</p>
+        <p>Hoy la ruleta decidirá una actividad entretenida para compartir.</p>
+      </div>
+
+      <h2 style="margin-top:18px;">Últimos resultados</h2>
+      <div id="history"></div>
+
+      <p class="hint">Se mantuvo el mismo estilo del archivo original: giro real, sonido, confeti y resultado sincronizado con la ruleta.</p>
+    </div>
+  </div>
+
+  <div class="footer-note">Ruleta familiar para entretener a niñas y niños de 4 a 6 años.</div>
+</div>
+
+<script>
+const opciones = [
+  {full:"🫧 Hacer burbujas",short:"🫧 Burb."},
+  {full:"🎨 Pintar un dibujo",short:"🎨 Pint."},
+  {full:"📚 Leer un cuento",short:"📚 Cuent."},
+  {full:"🧸 Jugar con peluches",short:"🧸 Peluche"},
+  {full:"🚗 Carrera de autitos",short:"🚗 Autit."},
+  {full:"🧱 Armar bloques",short:"🧱 Bloq."},
+  {full:"💃 Bailar una canción",short:"💃 Baila"},
+  {full:"🎵 Cantar juntos",short:"🎵 Canta"},
+  {full:"🖍️ Colorear libre",short:"🖍️ Color"},
+  {full:"🧩 Hacer un puzzle",short:"🧩 Puzzle"},
+  {full:"🐰 Saltar como conejo",short:"🐰 Saltos"},
+  {full:"🦖 Caminar como dinosaurio",short:"🦖 Dino"},
+  {full:"🎭 Hacer caras graciosas",short:"🎭 Caras"},
+  {full:"📸 Sacar fotos divertidas",short:"📸 Fotos"},
+  {full:"🍎 Elegir colación rica",short:"🍎 Snack"},
+  {full:"🍦 Ir por un helado",short:"🍦 Helado"},
+  {full:"🛝 Ir a los juegos",short:"🛝 Juegos"},
+  {full:"🌳 Ir a la plaza",short:"🌳 Plaza"},
+  {full:"⚽ Jugar con pelota",short:"⚽ Pelota"},
+  {full:"🎈 Jugar con globos",short:"🎈 Globo"},
+  {full:"👑 Jugar a disfrazarse",short:"👑 Disf."},
+  {full:"🏰 Hacer una fortaleza",short:"🏰 Fuerte"},
+  {full:"🚂 Hacer fila de juguetes",short:"🚂 Tren"},
+  {full:"👐 Juego de mímicas",short:"👐 Mimo"},
+  {full:"🌈 Hacer una manualidad",short:"🌈 Manual"},
+  {full:"🍪 Decorar galletas",short:"🍪 Gallet"},
+  {full:"🥞 Preparar algo simple",short:"🥞 Cocina"},
+  {full:"💧 Jugar con agua",short:"💧 Agua"},
+  {full:"🛁 Baño con espuma",short:"🛁 Espuma"},
+  {full:"🧦 Juego de calcetines locos",short:"🧦 Calcet"},
+  {full:"🔎 Buscar colores en casa",short:"🔎 Color"},
+  {full:"🌙 Cuento extra antes de dormir",short:"🌙 Noche"}
+];
+
+const colores=["#ff8fab","#ffd166","#a7c957","#72ddf7","#f4a261","#cdb4db","#8ecae6","#90be6d","#ffafcc","#bde0fe","#e5989b","#84a59d","#f6bd60","#c3aed6","#7bd389","#f28482","#ffd6a5","#a0c4ff","#bdb2ff","#f1c0e8","#99d98c","#ffcad4","#b8f2e6","#ffb703","#9bf6ff","#ffadad","#caffbf","#a0e7e5","#fec5bb","#d9ed92","#cddafd","#e9c46a"];
+const total=opciones.length, sectorDeg=360/total;
+const wheelRotator=document.getElementById("wheelRotator"), spinBtn=document.getElementById("spinBtn"), resetBtn=document.getElementById("resetBtn"), result=document.getElementById("result"), history=document.getElementById("history"), ideasList=document.getElementById("ideasList"), confettiCanvas=document.getElementById("confetti"), confettiCtx=confettiCanvas.getContext("2d"), resultOverlay=document.getElementById("resultOverlay"), overlayPrize=document.getElementById("overlayPrize"), closeOverlayBtn=document.getElementById("closeOverlayBtn");
+let rotation=0, spinning=false, historyItems=[], audioCtx=null, tickInterval=null, confettiAnim=null;
+
+function polar(cx,cy,r,deg){const rad=(deg-90)*Math.PI/180; return {x:cx+r*Math.cos(rad), y:cy+r*Math.sin(rad)};}
+function wedgePath(cx,cy,r,startDeg,endDeg){const s=polar(cx,cy,r,startDeg), e=polar(cx,cy,r,endDeg), large=(endDeg-startDeg)>180?1:0; return `M ${cx} ${cy} L ${s.x} ${s.y} A ${r} ${r} 0 ${large} 1 ${e.x} ${e.y} Z`;}
+function buildWheel(){
+  const size=1000, cx=500, cy=500, r=470;
+  let svg=`<svg id="wheelSvg" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg" aria-label="Ruleta"><circle cx="${cx}" cy="${cy}" r="${r}" fill="#f8fafc" stroke="rgba(255,255,255,.96)" stroke-width="14"/>`;
+  for(let i=0;i<total;i++){
+    const start=i*sectorDeg, end=start+sectorDeg;
+    svg+=`<path d="${wedgePath(cx,cy,r,start,end)}" fill="${colores[i%colores.length]}" stroke="rgba(255,255,255,.96)" stroke-width="2"/>`;
+  }
+  for(let i=0;i<total;i++){
+    const mid=i*sectorDeg + sectorDeg/2;
+    const p=polar(cx,cy, i%2===0 ? 375 : 300, mid);
+    const rotate=mid;
+    const fontSize=i%2===0 ? 24 : 20;
+    svg+=`<g transform="translate(${p.x} ${p.y}) rotate(${rotate})">
+      <text text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="${fontSize}" fill="#1e293b" stroke="rgba(255,255,255,.75)" stroke-width="3" paint-order="stroke">
+        ${opciones[i].short}
+      </text>
+    </g>`;
+  }
+  svg+=`<circle cx="${cx}" cy="${cy}" r="48" fill="#1f2937" stroke="#fff" stroke-width="8"/></svg>`;
+  wheelRotator.innerHTML=svg;
+}
+function buildIdeasList(){ideasList.innerHTML=""; opciones.forEach(op=>{const li=document.createElement("li"); li.textContent=op.full; ideasList.appendChild(li);});}
+function renderHistory(){history.innerHTML=""; if(!historyItems.length){const p=document.createElement("p"); p.textContent="Todavía no hay sorteos."; p.style.color="#5b6574"; history.appendChild(p); return;} historyItems.forEach((item,i)=>{const div=document.createElement("div"); div.className="history-item"; div.textContent=`${i+1}. ${item}`; history.appendChild(div);});}
+function resizeConfettiCanvas(){confettiCanvas.width=window.innerWidth*devicePixelRatio; confettiCanvas.height=window.innerHeight*devicePixelRatio; confettiCanvas.style.width=window.innerWidth+"px"; confettiCanvas.style.height=window.innerHeight+"px"; confettiCtx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);}
+function ensureAudio(){if(!audioCtx){const AC=window.AudioContext||window.webkitAudioContext; if(AC) audioCtx=new AC();} if(audioCtx&&audioCtx.state==="suspended") audioCtx.resume();}
+function playTone(freq,duration,type="sine",volume=0.03){if(!audioCtx)return; const osc=audioCtx.createOscillator(), gain=audioCtx.createGain(); osc.type=type; osc.frequency.value=freq; gain.gain.value=volume; osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime+duration); osc.stop(audioCtx.currentTime+duration);}
+function startSpinSound(){ensureAudio(); if(!audioCtx)return; let freq=260; tickInterval=setInterval(()=>{playTone(freq,0.05,"square",0.02); freq=Math.max(120,freq-3.5);},95);}
+function stopSpinSound(){if(tickInterval){clearInterval(tickInterval); tickInterval=null;}}
+function playWinSound(){ensureAudio(); if(!audioCtx)return; setTimeout(()=>playTone(523,0.12,"triangle",0.04),0); setTimeout(()=>playTone(659,0.12,"triangle",0.04),110); setTimeout(()=>playTone(784,0.18,"triangle",0.05),220);}
+function launchConfetti(){
+  const pieces=[]; const totalPieces=Math.min(180,Math.floor(window.innerWidth/3));
+  for(let i=0;i<totalPieces;i++){pieces.push({x:Math.random()*window.innerWidth,y:-20-Math.random()*window.innerHeight*.25,w:6+Math.random()*8,h:8+Math.random()*10,r:Math.random()*Math.PI,s:2+Math.random()*4.5,vx:-2+Math.random()*4,vr:-.18+Math.random()*.36,color:colores[Math.floor(Math.random()*colores.length)],alpha:1});}
+  const start=performance.now(), duration=2400; cancelAnimationFrame(confettiAnim);
+  function frame(now){
+    const elapsed=now-start; confettiCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
+    pieces.forEach(p=>{p.x+=p.vx; p.y+=p.s; p.r+=p.vr; p.s+=.02; p.alpha=Math.max(0,1-elapsed/duration); confettiCtx.save(); confettiCtx.globalAlpha=p.alpha; confettiCtx.translate(p.x,p.y); confettiCtx.rotate(p.r); confettiCtx.fillStyle=p.color; confettiCtx.fillRect(-p.w/2,-p.h/2,p.w,p.h); confettiCtx.restore();});
+    if(elapsed<duration) confettiAnim=requestAnimationFrame(frame); else confettiCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
+  }
+  confettiAnim=requestAnimationFrame(frame);
+}
+function showOverlay(selected){overlayPrize.textContent=selected; resultOverlay.classList.add("show");}
+function hideOverlay(){resultOverlay.classList.remove("show");}
+function getWinnerFromRotation(finalRotation){const normalized=((finalRotation%360)+360)%360; const pointerAngle=(360-normalized)%360; return Math.floor(pointerAngle/sectorDeg)%total;}
+function spinWheel(){
+  if(spinning) return;
+  hideOverlay(); ensureAudio(); spinning=true; spinBtn.disabled=true; result.textContent="Girando...";
+  const desiredWinner=Math.floor(Math.random()*total);
+  const centerAngle=desiredWinner*sectorDeg + sectorDeg/2;
+  const targetNormalized=(360-centerAngle)%360;
+  const currentNormalized=((rotation%360)+360)%360;
+  let delta=targetNormalized-currentNormalized; if(delta<0) delta+=360;
+  const extraTurns=360*(7+Math.floor(Math.random()*3)); rotation += extraTurns + delta;
+  startSpinSound(); wheelRotator.style.transform=`rotate(${rotation}deg)`;
+  setTimeout(()=>{stopSpinSound(); const actualWinner=getWinnerFromRotation(rotation); const selected=opciones[actualWinner].full; result.textContent=`✨ Salió: ${selected}`; historyItems=[selected,...historyItems].slice(0,8); renderHistory(); playWinSound(); launchConfetti(); showOverlay(selected); spinning=false; spinBtn.disabled=false;},5800);
+}
+function resetWheel(){
+  hideOverlay(); stopSpinSound(); rotation=0; spinning=false; spinBtn.disabled=false;
+  wheelRotator.style.transition="none"; wheelRotator.style.transform="rotate(0deg)";
+  result.textContent="Presiona “Girar ruleta” para comenzar"; historyItems=[]; renderHistory(); confettiCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
+  setTimeout(()=>{wheelRotator.style.transition="transform 5.8s cubic-bezier(.14,.72,.11,.99)";},40);
+}
+resizeConfettiCanvas(); buildWheel(); buildIdeasList(); renderHistory();
+window.addEventListener("resize", resizeConfettiCanvas);
+spinBtn.addEventListener("click", spinWheel);
+resetBtn.addEventListener("click", resetWheel);
+closeOverlayBtn.addEventListener("click", hideOverlay);
+resultOverlay.addEventListener("click", e=>{if(e.target===resultOverlay) hideOverlay();});
+</script>
+</body>
+</html>
